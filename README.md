@@ -58,7 +58,7 @@ REST API is implemented as a [python script](https://github.com/e-mine1/e-mine-w
 
 | API URL            | Method  | Required/Optional variables | Expected response                            |
 |:------------------ |:-------:|:--------------------------- |:-------------------------------------------  | 
-| /api/requests/<id> | GET     | id=[integer]                |                                              |
+| /api/requests/<id> | GET     | id=[uuid]                   |                                              |
 | /api/tokens/types  | GET     |                             | { "types": [                                 |
 |                    |         |                             |    "MyBasicToken",                           |
 |                    |         |                             |    "MyBurnableToken",                        |
@@ -78,19 +78,41 @@ REST API is implemented as a [python script](https://github.com/e-mine1/e-mine-w
 |                    |         |                             |  "version": 1}                               |
 |                    |         |                             |                                              |
 
-# Installation
+The endpoint `/api/tokens/create` is called to compile and deploy a new smart contract to the network. With the `key` 
+field of the response, the endpoint `/api/requests/<key>` can be called to obtain status results.
+On deployment success, the response contains the contract address (`token_addr`) and token ABI (`token_abi`).
 
-## Installing prerequisites
+### HTTP Return code conventions
+Response code for successfull requests are always 200. 
+If a response code is not 200, the json response contains a field `error` with the error message.
 
-`$ pip install -r requirements.txt`
+## Mobile Client
+We extended an existing Android application (see https://github.com/e-mine1/GenesisApp) to test the API.
+A demo video can be seen below.
 
-## Install Truffle
+<a href="https://drive.google.com/open?id=1nSEx-kJofXpJGVF96o5UcC-vv0UKdlrh">
+   <img src="docs/emine-android-app.jpg" height="500"></a>
 
-`$ npm install -g truffle`
+## Installation
 
-# Running the examples
+### Installing prerequisites
+- Python3+, pip3
+- nodejs, npm
+- Ganache: http://truffleframework.com/ganache/
 
-**TO-DO**
+```bash
+# install pip dependencies
+$ pip install -r requirements.txt
+   
+# install truffle
+$ npm install -g truffle
+````
 
-## Useful links
-- https://ethereum.stackexchange.com/questions/23279/steps-to-deploy-a-contract-using-metamask-and-truffle
+### Running the backend
+```
+# fire up local dev server
+$ ./run.sh
+
+# run Ganache
+```
+The E-Mine REST API is exposed at localhost:5000/api/.
